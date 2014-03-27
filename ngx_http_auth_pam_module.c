@@ -318,7 +318,7 @@ ngx_http_auth_pam_authenticate(ngx_http_request_t *r,
     /* try to authenticate user, log error on failure */
     if ((rc = pam_authenticate(pamh,
                                PAM_DISALLOW_NULL_AUTHTOK)) != PAM_SUCCESS) {
-        ngx_log_debug2(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
+        ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                       "PAM: user '%s' - not authenticated: %s",
                       uinfo.username.data, pam_strerror(pamh, rc));
         pam_end(pamh, PAM_SUCCESS);
@@ -327,7 +327,7 @@ ngx_http_auth_pam_authenticate(ngx_http_request_t *r,
 
     /* check that the account is healthy */
     if ((rc = pam_acct_mgmt(pamh, PAM_DISALLOW_NULL_AUTHTOK)) != PAM_SUCCESS) {
-        ngx_log_debug2(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
+        ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                       "PAM: user '%s'  - invalid account: %s",
                       uinfo.username.data, pam_strerror(pamh, rc));
         pam_end(pamh, PAM_SUCCESS);
